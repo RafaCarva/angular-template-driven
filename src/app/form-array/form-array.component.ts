@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-form-array',
@@ -16,20 +16,34 @@ export class FormArrayComponent implements OnInit {
       city: [''],
       state: ['']
     }),
-    phone: [''],
-    children: this.fb.group({
-      name: [''],
-      age: ['']
-    })
+    phones: this.fb.array(['']),
+    children: this.fb.array([])
   });
+
+  phones = this.clientForm.get('phones') as FormArray;
+  children = this.clientForm.get('children') as FormArray;
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+
   }
 
   submit() {
     console.log(this.clientForm.value);
+  }
+
+  addPhone() {
+    this.phones.push(this.fb.control(''));
+  }
+
+  addChild() {
+    this.children.push(
+      this.fb.group({
+        name: this.fb.control(''),
+        age: this.fb.control('')
+      })
+    );
   }
 
 }
